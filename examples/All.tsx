@@ -82,26 +82,19 @@ export function update(msg: Msg, model: Model): [Model, cmd.Cmd<Msg>] {
   }
 }
 
-function mapHtml<a, msg>(f: (a: a) => msg, ha: Html.Html<a>): Html.Html<msg> {
-  return new Html.Reader(dispatch => ha.run(a => dispatch(f(a))))
-}
-
 export function view(model: Model): Html.Html<Msg> {
   return new Html.Reader(dispatch => (
     <div>
       <h1>Counter</h1>
-      {mapHtml(subMsg => ({ type: 'Counter', subMsg } as Msg), Html.lazy(Counter.view)(model.counter)).run(dispatch)}
+      {Counter.view(model.counter).run(subMsg => dispatch({ type: 'Counter', subMsg }))}
       <h1>Http</h1>
-      {mapHtml(subMsg => ({ type: 'Http', subMsg } as Msg), Html.lazy(Http.view)(model.http)).run(dispatch)}
+      {Http.view(model.http).run(subMsg => dispatch({ type: 'Http', subMsg }))}
       <h1>LabeledCheckboxes</h1>
-      {mapHtml(
-        subMsg => ({ type: 'LabeledCheckboxes', subMsg } as Msg),
-        Html.lazy(LabeledCheckboxes.view)(model.labeledCheckboxes)
-      ).run(dispatch)}
+      {LabeledCheckboxes.view(model.labeledCheckboxes).run(subMsg => dispatch({ type: 'LabeledCheckboxes', subMsg }))}
       <h1>Task</h1>
-      {mapHtml(subMsg => ({ type: 'Task', subMsg } as Msg), Html.lazy(Task.view)(model.task)).run(dispatch)}
+      {Task.view(model.task).run(subMsg => dispatch({ type: 'Task', subMsg }))}
       <h1>Lazy Test</h1>
-      {mapHtml(subMsg => ({ type: 'LazyTest', subMsg } as Msg), Html.lazy(LazyTest.view)(model.lazyTest)).run(dispatch)}
+      {LazyTest.view(model.lazyTest).run(subMsg => dispatch({ type: 'LazyTest', subMsg }))}
     </div>
   ))
 }
